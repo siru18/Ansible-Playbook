@@ -5,6 +5,10 @@
 
     - name: Run update script
       script: update.sh
+      args:
+        executable: /bin/bash
 
     - name: Run notify script
       script: notify.sh
+      args:
+        executable: /bin/bash
