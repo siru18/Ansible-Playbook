@@ -2,9 +2,13 @@
   hosts: all
   become: yes
   tasks:
+    - name: Clone patch script repo
+      git:
+        repo: 'https://github.com/siru18/Ansible-Playbook.git'
+        dest: /tmp/patch-scripts
 
     - name: Run update script
-      script: update.sh
+      command: sh /tmp/patch-scripts/update.sh
 
     - name: Run notify script
-      script: notify.sh
+      command: bash /tmp/patch-scripts/notify.sh
