@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Email address to send report to
-TO="srinisudhan.balaji@aravind.org"
+TO="aravind_slcs_intern2@aravind.org"
 
 # Validate email format (POSIX-safe)
 echo "$TO" | grep -E "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" >/dev/null 2>&1
