@@ -18,7 +18,6 @@ LOG_FILE="/tmp/patch_report_$(date +%F_%H-%M-%S).log"
     echo ""
 
     # Detect OS
-    echo "Detecting OS..."
     if [ -f /etc/os-release ]; then
         . /etc/os-release
         OS_ID=$(echo "$ID" | tr '[:upper:]' '[:lower:]')
@@ -29,7 +28,7 @@ LOG_FILE="/tmp/patch_report_$(date +%F_%H-%M-%S).log"
     echo "Detected OS: $OS_ID"
     echo ""
 
-    # Update based on OS
+    # Patch based on distro
     case "$OS_ID" in
         ubuntu|debian)
             echo "Running apt update and upgrade..."
@@ -65,10 +64,9 @@ LOG_FILE="/tmp/patch_report_$(date +%F_%H-%M-%S).log"
 
 } > "$LOG_FILE" 2>&1
 
-# Prepare email content
+# Email subject and body
 SUBJECT="✅ System Patch Complete on $(hostname)"
-CURRENT_DATE=$(date '+%Y-%m-%d %H:%M:%S')
-BODY="Ansible patching completed successfully on $(hostname) at $CURRENT_DATE.
+BODY="Ansible patching completed on $(hostname) at $(date '+%Y-%m-%d %H:%M:%S').
 
 Please find the patch update log below:
 
