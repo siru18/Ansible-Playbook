@@ -2,9 +2,8 @@
   hosts: all
   become: yes
   tasks:
-
     - name: Run update script
-      script: update.sh
+      command: bash update.sh
 
     - name: Run notify script
-      script: notify.sh
+      command: bash notify.sh
