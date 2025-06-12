@@ -1,0 +1,10 @@
+- name: Patch system and notify
+  hosts: all
+  become: yes
+  tasks:
+
+    - name: Run update script
+      script: update.sh
+
+    - name: Run notify script
+      script: notify.sh
