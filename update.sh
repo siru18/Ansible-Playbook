@@ -4,7 +4,7 @@
 TO="srinisudhan.balaji@aravind.org"
 
 # Validate email format (POSIX compliant)
-echo "$TO" | grep -Eq "^[a-zA-Z0-9._%+-]\+@[a-zA-Z0-9.-]\+\.[a-zA-Z]\{2,\}$"
+echo "$TO" | grep -E "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" >/dev/null 2>&1
 if [ $? -ne 0 ]; then
     echo "Invalid email address format. Aborting email send."
     exit 1
