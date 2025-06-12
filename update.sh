@@ -1,24 +1,19 @@
 #!/bin/sh
 
-# Email address to send report to
 TO="srinisudhan.balaji@aravind.org"
 
-# Validate email format (POSIX-safe)
 echo "$TO" | grep -E "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" >/dev/null 2>&1
 if [ $? -ne 0 ]; then
     echo "Invalid email address format. Aborting email send."
     exit 1
 fi
 
-# Prepare log file with timestamp
 LOG_FILE="/tmp/patch_report_$(date +%F_%H-%M-%S).log"
 
 {
     echo "=== Patch Report: $(date) on $(hostname) ==="
     echo ""
 
-    # Detect OS
-    echo "Detecting OS..."
     if [ -f /etc/os-release ]; then
         . /etc/os-release
         OS_ID=$(echo "$ID" | tr '[:upper:]' '[:lower:]')
@@ -26,10 +21,10 @@ LOG_FILE="/tmp/patch_report_$(date +%F_%H-%M-%S).log"
         echo "OS detection failed."
         exit 1
     fi
+
     echo "Detected OS: $OS_ID"
     echo ""
 
-    # Update based on OS
     case "$OS_ID" in
         ubuntu|debian)
             echo "Running apt update and upgrade..."
@@ -65,7 +60,6 @@ LOG_FILE="/tmp/patch_report_$(date +%F_%H-%M-%S).log"
 
 } > "$LOG_FILE" 2>&1
 
-# Email subject and body
 SUBJECT="✅ System Patch Complete on $(hostname)"
 CURRENT_DATE=$(date '+%Y-%m-%d %H:%M:%S')
 BODY="Ansible patching completed successfully on $(hostname) at $CURRENT_DATE.
@@ -75,5 +69,4 @@ Please find the patch update log below:
 $(cat "$LOG_FILE")
 "
 
-# Send email
 echo "$BODY" | mail -s "$SUBJECT" "$TO"
