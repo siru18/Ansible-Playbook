@@ -3,7 +3,7 @@
 # Email address to send report to
 TO="srinisudhan.balaji@aravind.org"
 
-# POSIX-safe email format validation
+# Validate email format (POSIX-safe)
 echo "$TO" | grep -E "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" >/dev/null 2>&1
 if [ $? -ne 0 ]; then
     echo "Invalid email address format. Aborting email send."
@@ -65,7 +65,7 @@ LOG_FILE="/tmp/patch_report_$(date +%F_%H-%M-%S).log"
 
 } > "$LOG_FILE" 2>&1
 
-# Prepare email content
+# Email subject and body
 SUBJECT="✅ System Patch Complete on $(hostname)"
 CURRENT_DATE=$(date '+%Y-%m-%d %H:%M:%S')
 BODY="Ansible patching completed successfully on $(hostname) at $CURRENT_DATE.
