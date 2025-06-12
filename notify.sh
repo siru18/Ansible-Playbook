@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TO="srinisudhan.balaji@aravind.org"
+TO="aravind_slcs_intern2@aravind.org"
 LOG_FILE="/tmp/notify.log"
 CURRENT_DATE=$(date '+%Y-%m-%d %H:%M:%S')
 HOSTNAME=$(hostname)
