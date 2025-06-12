@@ -3,12 +3,11 @@
   become: yes
   tasks:
 
-    - name: Run update script
-      command: bash update.sh
-      args:
-        chdir: "{{ playbook_dir }}"
+    - name: Run update commands
+      shell: |
+        apt update -y && apt upgrade -y
+        echo "Patch completed on $(hostname)" > /tmp/patch_report.txt
 
-    - name: Run notify script
-      command: bash notify.sh
-      args:
-        chdir: "{{ playbook_dir }}"
+    - name: Send mail
+      shell: |
+        echo "Patching done on $(hostname)" | mail -s "✅ Patch Done on $(hostname)" srinisudhan.balaji@aravind.org
