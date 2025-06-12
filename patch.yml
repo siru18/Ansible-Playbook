@@ -2,8 +2,13 @@
   hosts: all
   become: yes
   tasks:
+
     - name: Run update script
       command: bash update.sh
+      args:
+        chdir: "{{ playbook_dir }}"
 
     - name: Run notify script
       command: bash notify.sh
+      args:
+        chdir: "{{ playbook_dir }}"
