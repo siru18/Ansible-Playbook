@@ -1,11 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
 # Email address to send report to
 TO="srinisudhan.balaji@aravind.org"
 
-# Validate email format (POSIX-safe)
-echo "$TO" | grep -E "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" >/dev/null 2>&1
-if [ $? -ne 0 ]; then
+# Validate email format
+if ! [[ "$TO" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
     echo "Invalid email address format. Aborting email send."
     exit 1
 fi
@@ -33,7 +32,7 @@ LOG_FILE="/tmp/patch_report_$(date +%F_%H-%M-%S).log"
     case "$OS_ID" in
         ubuntu|debian)
             echo "Running apt update and upgrade..."
-            apt update -q -y >/dev/null 2>&1
+            apt update -q -y 2>/dev/null
             UPGRADE_OUTPUT=$(apt -y upgrade 2>/dev/null)
             if echo "$UPGRADE_OUTPUT" | grep -q "0 upgraded"; then
                 echo "No packages needed upgrading."
@@ -48,7 +47,7 @@ LOG_FILE="/tmp/patch_report_$(date +%F_%H-%M-%S).log"
             else
                 UPDATE_OUTPUT=$(yum -y update 2>/dev/null)
             fi
-            if echo "$UPDATE_OUTPUT" | grep -q "No packages marked for update"; then
+             if echo "$UPDATE_OUTPUT" | grep -q "No packages marked for update"; then
                 echo "No packages needed upgrading."
             else
                 echo "Some packages were upgraded."
@@ -63,16 +62,16 @@ LOG_FILE="/tmp/patch_report_$(date +%F_%H-%M-%S).log"
     echo ""
     echo "Patch update completed at $(date)."
 
-} > "$LOG_FILE" 2>&1
+} &> "$LOG_FILE"
 
-# Email subject and body
+# Prepare email content
 SUBJECT="✅ System Patch Complete on $(hostname)"
 CURRENT_DATE=$(date '+%Y-%m-%d %H:%M:%S')
 BODY="Ansible patching completed successfully on $(hostname) at $CURRENT_DATE.
 
 Please find the patch update log below:
 
-$(cat "$LOG_FILE")
+$(cat $LOG_FILE)
 "
 
 # Send email
