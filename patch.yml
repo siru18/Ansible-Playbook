@@ -1,13 +1,10 @@
-- name: Patch system and notify
+name: Patch system and notify
   hosts: all
   become: yes
   tasks:
 
-    - name: Run update commands
-      shell: |
-        apt update -y && apt upgrade -y
-        echo "Patch completed on $(hostname)" > /tmp/patch_report.txt
+    - name: Run update script
+      script: update.sh
 
-    - name: Send mail
-      shell: |
-        echo "Patching done on $(hostname)" | mail -s "✅ Patch Done on $(hostname)" srinisudhan.balaji@aravind.org
+    - name: Run notify script
+      script: notify.sh
